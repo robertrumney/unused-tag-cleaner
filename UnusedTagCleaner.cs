@@ -1,9 +1,10 @@
-using UnityEditor;
 using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
+
+using UnityEditor;
 using UnityEditor.SceneManagement;
-using UnityEngine.SceneManagement;
+
+using System.Linq;
+using System.Collections.Generic;
 
 public class UnusedTagCleaner : EditorWindow
 {
@@ -13,7 +14,7 @@ public class UnusedTagCleaner : EditorWindow
     [MenuItem("Tools/Unused Tags Remover")]
     public static void ShowWindow()
     {
-        GetWindow<UnusedTagCleaner>("Unused Tags Remover");
+        GetWindow<UnusedTagCleaner>("Unused Tag Cleaner");
     }
 
     private void OnGUI()
