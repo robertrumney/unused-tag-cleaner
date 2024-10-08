@@ -1,4 +1,4 @@
-# UnusedTagCleaner
+# Unused Tag Cleaner
 
 UnusedTagCleaner is a Unity Editor tool designed to help maintain a clean and efficient project structure by identifying and removing unused tags from the Tag Manager. This tool is particularly useful for larger Unity projects with multiple contributors, where managing tags can become cumbersome.
 
@@ -24,6 +24,10 @@ UnusedTagCleaner is a Unity Editor tool designed to help maintain a clean and ef
 ## Contribution
 
 Contributions to UnusedTagCleaner are welcome. Please feel free to fork the repository, make changes, and submit a pull request with your improvements.
+
+## Bonus Script
+
+The `Tag Usage` folder includes a supplementary script designed to analyze the usage of any remaining tags in your Unity project, providing a detailed review of how these leftover tags are employed across scenes and scripts, especially useful after a cleanup process where unused tags have been removed.
 
 ## License
 
