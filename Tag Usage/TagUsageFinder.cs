@@ -1,16 +1,17 @@
-using UnityEditor;
 using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
+
+using UnityEditor;
 using UnityEditor.SceneManagement;
-using UnityEngine.SceneManagement;
+
 using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 public class TagUsageFinder : EditorWindow
 {
     private string inputTag = string.Empty;
-    private List<string> tagLocations = new List<string>();
+    private readonly List<string> tagLocations = new List<string>();
     private bool tagScanCompleted = false;
     private Vector2 scrollPosition;
 
