@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 
-public class UnusedTagsRemover : EditorWindow
+public class UnusedTagCleaner : EditorWindow
 {
     private List<string> unusedTags = new List<string>();
     private bool scanCompleted = false;
