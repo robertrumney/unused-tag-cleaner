@@ -13,7 +13,7 @@ public class UnusedTagCleaner : EditorWindow
     [MenuItem("Tools/Unused Tags Remover")]
     public static void ShowWindow()
     {
-        GetWindow<UnusedTagsRemover>("Unused Tags Remover");
+        GetWindow<UnusedTagCleaner>("Unused Tags Remover");
     }
 
     private void OnGUI()
