@@ -4,8 +4,9 @@ UnusedTagCleaner is a Unity Editor tool designed to help maintain a clean and ef
 
 ## Features
 
-- **Comprehensive Tag Scan**: Scans all enabled scenes and C# script files in the project to determine which tags are in use, capturing both statically placed objects in scenes and dynamically assigned tags in scripts.
-- **Identify Unused Tags**: Lists all tags that are not used in any part of the project, whether in scenes or assigned programmatically in scripts.
+- **Comprehensive Tag Scan**: Scans all enabled scenes, assets, and prefabs, and C# script files in the project to determine which tags are in use, capturing both statically placed objects in scenes and dynamically assigned tags in scripts.
+- **Configurable Scan Options**: Includes an option to extend the scan to assets and prefabs, allowing for a more thorough cleanup.
+- **Identify Unused Tags**: Lists all tags that are not used in any part of the project, whether in scenes, assets, prefabs, or assigned programmatically in scripts.
 - **Remove Unused Tags**: Provides an option to delete all identified unused tags with a single click, keeping your Tag Manager clean and relevant.
 
 ## Installation
@@ -17,9 +18,10 @@ UnusedTagCleaner is a Unity Editor tool designed to help maintain a clean and ef
 
 1. Open your Unity project.
 2. Navigate to `Tools > Unused Tags Remover` in the Unity menu bar to open the UnusedTagCleaner window.
-3. Click on `Scan for Unused Tags` to start the scanning process. The tool will analyze all enabled scenes and C# scripts to compile a comprehensive list of unused tags.
-4. Review the list of unused tags displayed in the tool window.
-5. If you decide to clean up, click on `Remove All Unused Tags` to delete them from the project.
+3. Use the checkbox to select whether to include assets and prefabs in the scan.
+4. Click on `Scan for Unused Tags` to start the scanning process. The tool will analyze all enabled scenes, assets, prefabs, and C# scripts to compile a comprehensive list of unused tags.
+5. Review the list of unused tags displayed in the tool window.
+6. If you decide to clean up, click on `Remove All Unused Tags` to delete them from the project.
 
 ## Contribution
 
