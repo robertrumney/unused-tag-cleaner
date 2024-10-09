@@ -19,7 +19,7 @@ The "Tag Usage Finder" is a Unity Editor tool designed to provide a detailed ana
 
 1. Open your Unity project.
 2. Navigate to `Tools > Tag Usage Finder` from the Unity menu bar to open the Tag Usage Finder window.
-3. Enter the tag name you wish to investigate in the "Tag Name:" text field.
+3. Select the tag you wish to investigate from the "Tag Name:" dropdown menu.
 4. Use the checkboxes to configure the search options as desired.
 5. Click on "Find Tag Usage" to initiate the scanning process.
 6. Review the results displayed in the scrollable list within the window. Locations will include both scene paths and script files where the tag is used.
