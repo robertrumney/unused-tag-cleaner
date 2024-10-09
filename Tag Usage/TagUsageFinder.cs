@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
+using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -9,12 +10,13 @@ using System.Text.RegularExpressions;
 
 public class TagUsageFinder : EditorWindow
 {
-    private string inputTag = string.Empty;
-    private readonly List<string> tagLocations = new List<string>();
+    private string selectedTag = string.Empty;
+    private List<string> tagLocations = new List<string>();
     private bool tagScanCompleted = false;
-    private bool includeProjectAssets = false;  
-    private bool searchInScripts = false;   
+    private bool includeProjectAssets = false;
+    private bool searchInScripts = false;
     private Vector2 scrollPosition;
+    private string[] availableTags;
 
     [MenuItem("Tools/Tag Usage Finder")]
     public static void ShowWindow()
@@ -22,22 +24,35 @@ public class TagUsageFinder : EditorWindow
         GetWindow<TagUsageFinder>("Tag Usage Finder");
     }
 
+    private void OnEnable()
+    {
+        availableTags = UnityEditorInternal.InternalEditorUtility.tags;
+    }
+
     private void OnGUI()
     {
-        GUILayout.Label("Enter the tag to find its usage:", EditorStyles.boldLabel);
-        inputTag = EditorGUILayout.TextField("Tag Name:", inputTag);
+        GUILayout.Label("Select the tag to find its usage:", EditorStyles.boldLabel);
+
+        // Use EditorGUILayout.Popup to get the selected index
+        int selectedIndex = EditorGUILayout.Popup("Tag Name:", Array.IndexOf(availableTags, selectedTag), availableTags);
+
+        // Update selectedTag using the selected index
+        if (selectedIndex >= 0 && selectedIndex < availableTags.Length)
+        {
+            selectedTag = availableTags[selectedIndex];
+        }
 
         includeProjectAssets = EditorGUILayout.Toggle("Include Project Assets:", includeProjectAssets);
         searchInScripts = EditorGUILayout.Toggle("Search in Scripts:", searchInScripts);
 
         if (GUILayout.Button("Find Tag Usage"))
         {
-            FindTagUsage(inputTag);
+            FindTagUsage(selectedTag);
         }
 
         if (tagScanCompleted)
         {
-            GUILayout.Label("Locations using tag '" + inputTag + "':");
+            GUILayout.Label("Locations using tag '" + selectedTag + "':");
             if (tagLocations.Count == 0)
             {
                 GUILayout.Label("No usage found.");
