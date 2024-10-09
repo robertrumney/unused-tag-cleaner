@@ -1,8 +1,6 @@
 using UnityEngine;
-
 using UnityEditor;
 using UnityEditor.SceneManagement;
-
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -12,6 +10,7 @@ public class UnusedTagCleaner : EditorWindow
 {
     private List<string> unusedTags = new List<string>();
     private bool scanCompleted = false;
+    private bool includeAssetsAndPrefabs = false; // Checkbox state
 
     [MenuItem("Tools/Unused Tag Cleaner")]
     public static void ShowWindow()
@@ -21,6 +20,8 @@ public class UnusedTagCleaner : EditorWindow
 
     private void OnGUI()
     {
+        includeAssetsAndPrefabs = EditorGUILayout.Toggle("Include Assets & Prefabs", includeAssetsAndPrefabs);
+
         if (GUILayout.Button("Scan for Unused Tags"))
         {
             ScanForUnusedTags();
@@ -53,6 +54,21 @@ public class UnusedTagCleaner : EditorWindow
             foreach (var go in scene.GetRootGameObjects())
             {
                 GetUsedTags(go, usedTags);
+            }
+        }
+
+        // Optionally scan all assets and prefabs
+        if (includeAssetsAndPrefabs)
+        {
+            var allAssetPaths = AssetDatabase.GetAllAssetPaths();
+            var prefabPaths = allAssetPaths.Where(path => path.EndsWith(".prefab"));
+            foreach (var prefabPath in prefabPaths)
+            {
+                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+                if (prefab != null)
+                {
+                    GetUsedTags(prefab, usedTags);
+                }
             }
         }
 
