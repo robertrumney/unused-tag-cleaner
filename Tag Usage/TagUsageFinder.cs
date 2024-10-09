@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 public class TagUsageFinder : EditorWindow
 {
     private string selectedTag = string.Empty;
-    private List<string> tagLocations = new List<string>();
+    private readonly List<string> tagLocations = new List<string>();
     private bool tagScanCompleted = false;
     private bool includeProjectAssets = false;
     private bool searchInScripts = false;
@@ -33,10 +33,8 @@ public class TagUsageFinder : EditorWindow
     {
         GUILayout.Label("Select the tag to find its usage:", EditorStyles.boldLabel);
 
-        // Use EditorGUILayout.Popup to get the selected index
         int selectedIndex = EditorGUILayout.Popup("Tag Name:", Array.IndexOf(availableTags, selectedTag), availableTags);
 
-        // Update selectedTag using the selected index
         if (selectedIndex >= 0 && selectedIndex < availableTags.Length)
         {
             selectedTag = availableTags[selectedIndex];
@@ -107,11 +105,11 @@ public class TagUsageFinder : EditorWindow
         if (searchInScripts)
         {
             var scriptFiles = Directory.GetFiles(Application.dataPath, "*.cs", SearchOption.AllDirectories);
-            var tagRegex = new Regex(@"\btag\s*=\s*\""([^\""]+)\"""); // Improved regex for capturing dynamic tags
+            var tagRegex = new Regex(@"\btag\s*(==|=)\s*\""" + Regex.Escape(tag) + @"""|CompareTag\(\""" + Regex.Escape(tag) + @"""\)"); // Regex to catch assignments and comparisons
             foreach (var file in scriptFiles)
             {
                 string content = File.ReadAllText(file);
-                if (tagRegex.IsMatch(content) && tagRegex.Match(content).Groups[1].Value == tag)
+                if (tagRegex.IsMatch(content))
                 {
                     tagLocations.Add("Script: " + Path.GetFileName(file));
                 }
@@ -123,7 +121,7 @@ public class TagUsageFinder : EditorWindow
 
     private void CheckTagUsage(GameObject gameObject, string tag, string locationIdentifier)
     {
-        if (gameObject.tag == tag)
+        if (gameObject.CompareTag(tag))
         {
             tagLocations.Add(locationIdentifier + " -> " + GetGameObjectPath(gameObject));
         }
