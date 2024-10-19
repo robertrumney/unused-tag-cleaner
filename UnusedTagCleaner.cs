@@ -1,27 +1,24 @@
-using UnityEngine;
 using UnityEditor;
-using UnityEditor.SceneManagement;
-using System.IO;
-using System.Linq;
+using UnityEngine;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using System.Linq;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
-public class UnusedTagCleaner : EditorWindow
+public class UnusedTagsRemover : EditorWindow
 {
     private List<string> unusedTags = new List<string>();
     private bool scanCompleted = false;
-    private bool includeAssetsAndPrefabs = false; // Checkbox state
+    private Vector2 scrollPosition; // To keep track of the ScrollView position
 
-    [MenuItem("Tools/Unused Tag Cleaner")]
+    [MenuItem("Tools/Unused Tags Remover")]
     public static void ShowWindow()
     {
-        GetWindow<UnusedTagCleaner>("Unused Tags Remover");
+        GetWindow<UnusedTagsRemover>("Unused Tags Remover");
     }
 
     private void OnGUI()
     {
-        includeAssetsAndPrefabs = EditorGUILayout.Toggle("Include Assets & Prefabs", includeAssetsAndPrefabs);
-
         if (GUILayout.Button("Scan for Unused Tags"))
         {
             ScanForUnusedTags();
@@ -30,10 +27,14 @@ public class UnusedTagCleaner : EditorWindow
         if (scanCompleted)
         {
             GUILayout.Label("Unused Tags:");
+
+            // Create a ScrollView to show tags
+            scrollPosition = GUILayout.BeginScrollView(scrollPosition);
             foreach (var tag in unusedTags)
             {
                 GUILayout.Label(tag);
             }
+            GUILayout.EndScrollView();
 
             if (GUILayout.Button("Remove All Unused Tags"))
             {
@@ -47,41 +48,12 @@ public class UnusedTagCleaner : EditorWindow
         var allTags = new List<string>(UnityEditorInternal.InternalEditorUtility.tags);
         var usedTags = new HashSet<string>();
 
-        // Scan all scenes
         foreach (var scenePath in EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path))
         {
             var scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
             foreach (var go in scene.GetRootGameObjects())
             {
                 GetUsedTags(go, usedTags);
-            }
-        }
-
-        // Optionally scan all assets and prefabs
-        if (includeAssetsAndPrefabs)
-        {
-            var allAssetPaths = AssetDatabase.GetAllAssetPaths();
-            var prefabPaths = allAssetPaths.Where(path => path.EndsWith(".prefab"));
-            foreach (var prefabPath in prefabPaths)
-            {
-                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
-                if (prefab != null)
-                {
-                    GetUsedTags(prefab, usedTags);
-                }
-            }
-        }
-
-        // Scan all scripts for dynamic tag references
-        var scriptFiles = Directory.GetFiles(Application.dataPath, "*.cs", SearchOption.AllDirectories);
-        var tagRegex = new Regex(@"\btag\b\s*=\s*""([^""]+)""");
-        foreach (var file in scriptFiles)
-        {
-            string content = File.ReadAllText(file);
-            var matches = tagRegex.Matches(content);
-            foreach (Match match in matches)
-            {
-                usedTags.Add(match.Groups[1].Value);
             }
         }
 
