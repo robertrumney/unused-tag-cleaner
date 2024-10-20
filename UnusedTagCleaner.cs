@@ -1,15 +1,17 @@
 using UnityEditor;
-using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEditor.SceneManagement;
+
+using UnityEngine;
 using UnityEngine.SceneManagement;
+
+using System.Linq;
+using System.Collections.Generic;
 
 public class UnusedTagsRemover : EditorWindow
 {
     private List<string> unusedTags = new List<string>();
     private bool scanCompleted = false;
-    private Vector2 scrollPosition; // To keep track of the ScrollView position
+    private Vector2 scrollPosition; 
 
     [MenuItem("Tools/Unused Tags Remover")]
     public static void ShowWindow()
@@ -28,7 +30,6 @@ public class UnusedTagsRemover : EditorWindow
         {
             GUILayout.Label("Unused Tags:");
 
-            // Create a ScrollView to show tags
             scrollPosition = GUILayout.BeginScrollView(scrollPosition);
             foreach (var tag in unusedTags)
             {
